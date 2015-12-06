@@ -7,7 +7,6 @@ import java.util.List;
 
 import de.ketrwu.levitate.cli.Message;
 import de.ketrwu.levitate.cli.SyntaxHandler;
-import de.ketrwu.levitate.cli.Message.TextMode;
 import de.ketrwu.levitate.cli.exception.SyntaxResponseException;
 
 /**
@@ -21,7 +20,7 @@ public class EqualsSyntax implements SyntaxHandler {
 		HashMap<String, String> replaces = new HashMap<String, String>();
 		replaces.put("%arg%", passed);
 		replaces.put("%value%", parameter);
-		if(!parameter.equals(passed)) throw new SyntaxResponseException(Message.EQUALSSYNTAX_DOESNT_EQUAL.get(TextMode.COLOR, replaces));
+		if(!parameter.equals(passed)) throw new SyntaxResponseException(Message.EQUALSSYNTAX_DOESNT_EQUAL.get(replaces));
 	}
 
 	@Override

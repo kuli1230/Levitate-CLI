@@ -6,7 +6,6 @@ import java.util.List;
 
 import de.ketrwu.levitate.cli.Message;
 import de.ketrwu.levitate.cli.SyntaxHandler;
-import de.ketrwu.levitate.cli.Message.TextMode;
 import de.ketrwu.levitate.cli.exception.SyntaxResponseException;
 
 /**
@@ -41,7 +40,7 @@ public class BooleanSyntax implements SyntaxHandler {
 	@Override
 	public void check(String parameter, final String passed) throws SyntaxResponseException {
 		if(values.contains(passed.toLowerCase())) return;
-		throw new SyntaxResponseException(Message.BOOLEANSYNTAX_HAS_TO_BE_BOOLEAN.get(TextMode.COLOR, new HashMap<String, String>(){{put("%arg%", passed);}}));
+		throw new SyntaxResponseException(Message.BOOLEANSYNTAX_HAS_TO_BE_BOOLEAN.get(new HashMap<String, String>(){{put("%arg%", passed);}}));
 	}
 
 	@Override

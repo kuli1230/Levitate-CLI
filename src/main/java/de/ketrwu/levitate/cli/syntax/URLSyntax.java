@@ -8,7 +8,6 @@ import java.util.List;
 
 import de.ketrwu.levitate.cli.Message;
 import de.ketrwu.levitate.cli.SyntaxHandler;
-import de.ketrwu.levitate.cli.Message.TextMode;
 import de.ketrwu.levitate.cli.exception.SyntaxResponseException;
 
 /**
@@ -27,11 +26,11 @@ public class URLSyntax implements SyntaxHandler {
 			if(parameter != null && !parameter.equals("")) {
 				if(!passed.toLowerCase().startsWith(parameter.toLowerCase())) {
 					replaces.put("%parameter%", parameter);
-					throw new SyntaxResponseException(Message.URLSYNTAX_DOES_NOT_START_WITH.get(TextMode.COLOR, replaces));
+					throw new SyntaxResponseException(Message.URLSYNTAX_DOES_NOT_START_WITH.get(replaces));
 				}
 			}
 		} catch (MalformedURLException e) {
-			throw new SyntaxResponseException(Message.URLSYNTAX_URL_MALFORMED.get(TextMode.COLOR, replaces));
+			throw new SyntaxResponseException(Message.URLSYNTAX_URL_MALFORMED.get(replaces));
 		}
 	}
 

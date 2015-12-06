@@ -10,7 +10,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
-import de.ketrwu.levitate.cli.Message.TextMode;
 import de.ketrwu.levitate.cli.exception.CommandAnnotationException;
 import de.ketrwu.levitate.cli.exception.CommandSyntaxException;
 import de.ketrwu.levitate.cli.exception.SyntaxResponseException;
@@ -56,19 +55,19 @@ public class CommandRegistry {
 				CommandInformation cmd = null;
 				String[] aliases = null;
 				if(m.isAnnotationPresent(de.ketrwu.levitate.cli.Command.class)) {
-					if(m.getParameterTypes().length != 3) throw new CommandAnnotationException(Message.CR_PARAMETERCOUNT_INVALID.get(TextMode.PLAIN, replaces));
+					if(m.getParameterTypes().length != 3) throw new CommandAnnotationException(Message.CR_PARAMETERCOUNT_INVALID.get(replaces));
 					if(m.getParameterTypes()[1] != String.class) {
 						replaces.put("%index%", "1");
 						replaces.put("%class%", "String");
-						throw new CommandAnnotationException(Message.CR_PARAMETER_INVALID.get(TextMode.PLAIN, replaces));
+						throw new CommandAnnotationException(Message.CR_PARAMETER_INVALID.get(replaces));
 					}
 					if(m.getParameterTypes()[2] != ParameterSet.class) {
 						replaces.put("%index%", "2");
 						replaces.put("%class%", "ParameterSet");
-						throw new CommandAnnotationException(Message.CR_PARAMETER_INVALID.get(TextMode.PLAIN, replaces));
+						throw new CommandAnnotationException(Message.CR_PARAMETER_INVALID.get(replaces));
 					}
 					
-					de.ketrwu.levitate.cli.Command commandAnnotation = m.getAnnotation(de.ketrwu.levitate.cli.Command.class);
+					Command commandAnnotation = m.getAnnotation(Command.class);
 					cmd = new CommandInformation(commandAnnotation.syntax());
 					
 					if(!commandAnnotation.permission().equals("")) cmd.setPermission(commandAnnotation.permission());
@@ -157,46 +156,6 @@ public class CommandRegistry {
 			commands.put(cinfo, handler);
 		}
 		commands.put(info, handler);
-	}
-	
-	/**
-	 * Get strings which fit the entered argument
-	 * @param sender CommandSender
-	 * @param command Base-Command or alias
-	 * @param args
-	 * @return List of strings which could fit the entered argument
-	 */
-	private List<String> handleTabComplete(String command, String[] args) {
-		if(args.length == 0) return null;
-		List<String> complete = new ArrayList<String>();
-		int lastArg = args.length-1;
-		String arg = args[lastArg];
-		
-		for(CommandInformation info : commands.keySet()) {
-			if(!info.getCommand().equalsIgnoreCase(command)) continue;
-			Argument exArg = null;
-			try {
-				exArg = info.getArgs().get(lastArg);
-			} catch (IndexOutOfBoundsException e) {
-				exArg = info.getArgs().get(info.getArgs().size()-1);
-				if(!exArg.isUnlimited()) e.printStackTrace();
-			}
-			if(exArg == null) continue;
-			List<String> l = exArg.getHandler().getTabComplete(exArg.getParameter(), arg);
-			if(l != null && l.size() > 0) complete.addAll(l);
-		}
-		Iterator<String> iComplete = complete.iterator();
-		while(iComplete.hasNext()) {
-			String str = iComplete.next();
-			if(!str.toLowerCase().startsWith(arg.toLowerCase())) iComplete.remove();
-		}
-		Collections.sort(complete, new Comparator<String>() {
-	        @Override
-	        public int compare(String s1, String s2) {
-	            return s1.compareToIgnoreCase(s2);
-	        }
-	    });	
-		return complete;
 	}
 	
 	/**

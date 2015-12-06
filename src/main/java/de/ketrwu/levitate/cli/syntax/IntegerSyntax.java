@@ -5,7 +5,6 @@ import java.util.List;
 
 import de.ketrwu.levitate.cli.Message;
 import de.ketrwu.levitate.cli.SyntaxHandler;
-import de.ketrwu.levitate.cli.Message.TextMode;
 import de.ketrwu.levitate.cli.exception.CommandSyntaxException;
 import de.ketrwu.levitate.cli.exception.SyntaxResponseException;
 
@@ -19,31 +18,31 @@ public class IntegerSyntax implements SyntaxHandler {
 	public void check(String parameter, String passed) throws CommandSyntaxException, SyntaxResponseException {
 		HashMap<String, String> replaces = new HashMap<String, String>();
 		replaces.put("%arg%", passed);
-		if(!isInt(passed)) throw new SyntaxResponseException(Message.INTEGERSYNTAX_HAS_NO_INTEGER.get(TextMode.COLOR, replaces));
+		if(!isInt(passed)) throw new SyntaxResponseException(Message.INTEGERSYNTAX_HAS_NO_INTEGER.get(replaces));
 		int passedInt = Integer.parseInt(passed);
 		if(parameter.equals("+")) {
-			if(passedInt < 0 && passedInt != 0) throw new SyntaxResponseException(Message.INTEGERSYNTAX_HAS_TO_BE_POSITIVE_ZERO.get(TextMode.COLOR, replaces));
+			if(passedInt < 0 && passedInt != 0) throw new SyntaxResponseException(Message.INTEGERSYNTAX_HAS_TO_BE_POSITIVE_ZERO.get(replaces));
 		} else if(parameter.equals("-")) {
-			if(passedInt > 0 && passedInt != 0) throw new SyntaxResponseException(Message.INTEGERSYNTAX_HAS_TO_BE_NEGATIVE_ZERO.get(TextMode.COLOR, replaces));
+			if(passedInt > 0 && passedInt != 0) throw new SyntaxResponseException(Message.INTEGERSYNTAX_HAS_TO_BE_NEGATIVE_ZERO.get(replaces));
 		} else if(parameter.contains("-")) {
 			replaces.put("%parameter%", parameter);
-			if(!parameter.matches("(-?[0-9]+)-(-?[0-9]+)")) throw new CommandSyntaxException(Message.INTEGERSYNTAX_PARAMETER_MALFORMED.get(TextMode.COLOR, replaces));
+			if(!parameter.matches("(-?[0-9]+)-(-?[0-9]+)")) throw new CommandSyntaxException(Message.INTEGERSYNTAX_PARAMETER_MALFORMED.get(replaces));
 			if(parameter.startsWith("-")) {
 				int a = Integer.parseInt("-"+parameter.split("-", 3)[1]);
 				int b = Integer.parseInt(parameter.split("-", 3)[2]);
 				replaces.put("%min%", String.valueOf(a));
 				replaces.put("%max%", String.valueOf(b));
 				
-				if(a > b) throw new SyntaxResponseException(Message.INTEGERSYNTAX_PARAMETER_MALFORMED_2.get(TextMode.COLOR, replaces));
-				if(passedInt < a || passedInt > b) throw new SyntaxResponseException(Message.INTEGERSYNTAX_HAS_TO_BE_INBETWEEN.get(TextMode.COLOR, replaces));
+				if(a > b) throw new SyntaxResponseException(Message.INTEGERSYNTAX_PARAMETER_MALFORMED_2.get(replaces));
+				if(passedInt < a || passedInt > b) throw new SyntaxResponseException(Message.INTEGERSYNTAX_HAS_TO_BE_INBETWEEN.get(replaces));
 				return;
 			} else {
 				int a = Integer.parseInt(parameter.split("-", 2)[0]);
 				int b = Integer.parseInt(parameter.split("-", 2)[1]);
 				replaces.put("%min%", String.valueOf(a));
 				replaces.put("%max%", String.valueOf(b));
-				if(a > b) throw new SyntaxResponseException(Message.INTEGERSYNTAX_PARAMETER_MALFORMED_2.get(TextMode.COLOR, replaces));
-				if(passedInt < a || passedInt > b) throw new SyntaxResponseException(Message.INTEGERSYNTAX_HAS_TO_BE_INBETWEEN.get(TextMode.COLOR, replaces));
+				if(a > b) throw new SyntaxResponseException(Message.INTEGERSYNTAX_PARAMETER_MALFORMED_2.get(replaces));
+				if(passedInt < a || passedInt > b) throw new SyntaxResponseException(Message.INTEGERSYNTAX_HAS_TO_BE_INBETWEEN.get(replaces));
 			}		
 		}
 	}

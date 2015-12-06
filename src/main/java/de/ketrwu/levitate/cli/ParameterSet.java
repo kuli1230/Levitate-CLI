@@ -72,51 +72,6 @@ public class ParameterSet {
 		if(arg.equalsIgnoreCase("disable")) return false;
 		return false;
 	}
-
-	/**
-	 * Get argument as Player. Player is null if he is offline
-	 * @param i The index in your command, starts at 0
-	 * @return
-	 */
-	public Player getPlayer(int i) {
-		return Bukkit.getPlayer(parameter.get(i));
-	}
-
-	/**
-	 * Get argument as OfflinePlayer
-	 * @param i The index in your command, starts at 0
-	 * @return
-	 */
-	public OfflinePlayer getOfflinePlayer(int i) {
-		return Bukkit.getOfflinePlayer(parameter.get(i));
-	}
-	
-	/**
-	 * Get argument as ItemStack
-	 * @param i The index in your command, starts at 0
-	 * @return
-	 */
-	public ItemStack getItemStack(int i) {
-		ItemStack is = null;
-		String arg = parameter.get(i);
-		if(ItemStackSyntax.items.containsKey(arg.toLowerCase())) {
-			is = ItemStackSyntax.items.get(arg.toLowerCase());
-		} else if(arg.contains(":")) {
-			String a = arg.split(":")[0];
-			String b = arg.split(":")[1];
-			int id = 0;
-			int meta = Integer.parseInt(b);
-			if(!isInt(a)) {
-				is = ItemStackSyntax.items.get(a);
-				is.setDurability((short) meta);
-				return is;
-			}
-			is = new ItemStack(Material.getMaterial(id), 1, (short) meta);
-		} else if(isInt(arg)) {
-			is = new ItemStack(Integer.parseInt(arg));
-		}
-		return is;
-	}
 	
 	/**
 	 * Get arguments from a to b as String delimited by a space
@@ -154,15 +109,6 @@ public class ParameterSet {
 	 */
 	public String getMessage(int start) {
 		return getString(start, parameter.size());
-	}
-
-	/**
-	 * Get argument as world
-	 * @param i The index in your command, starts at 0
-	 * @return
-	 */
-	public World getWorld(int i) {
-		return Bukkit.getWorld(parameter.get(i));
 	}
 	
 	/**

@@ -3,6 +3,7 @@ package de.ketrwu.levitate.cli;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.logging.Logger;
 
 /**
  * Bundles everything you need to use Levitate.
@@ -13,17 +14,17 @@ import java.io.InputStream;
 public class Levitate {
 	
 	private CommandRegistry registry;
-
+	private Logger logger;
+	
 	/**
 	 * Bundles everything you need to use Levitate.
 	 * Read <a href="https://github.com/KennethWussmann/Levitate/wiki/2.-First-command">this page</a> to create your first Levitate-Command.
 	 * @param plugin Your plugin instance
 	 */
 	public Levitate(Logger logger) {
-		this.plugin = plugin;
-		SyntaxValidations.registerDefaultSyntax(plugin);
-		registry = new CommandRegistry(plugin);
-		registry.registerBukkitPermissionHandler();
+		this.logger = logger;
+		SyntaxValidations.registerDefaultSyntax();
+		registry = new CommandRegistry(logger);
 		registry.registerDefaultHelpMap();
 	}
 
@@ -35,16 +36,13 @@ public class Levitate {
 	 * @param plugin
 	 * @param createYAML
 	 */
-	public Levitate(JavaPlugin plugin, boolean createYAML) {
-		this.plugin = plugin;
-		SyntaxValidations.registerDefaultSyntax(plugin);
-		registry = new CommandRegistry(plugin);
-		registry.registerBukkitPermissionHandler();
+	public Levitate(Logger logger, boolean createYAML) {
+		this.logger = logger;
+		SyntaxValidations.registerDefaultSyntax();
+		registry = new CommandRegistry(logger);
 		registry.registerDefaultHelpMap();
 		if(createYAML) {
-			File pluginFolder = plugin.getDataFolder();
-			File config = new File(pluginFolder, "messages.yml");
-			if(!pluginFolder.exists()) pluginFolder.mkdirs();
+			File config = new File("messages.yml");
 			if(!config.exists()) {
 				InputStream jarURL = Levitate.class.getResourceAsStream("/messages.yml");
 				try {
@@ -56,20 +54,15 @@ public class Levitate {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				
 			}
 			Message.loadConfig(config);
 		}
 	}
-
-	/**
-	 * Get instance of JavaPlugin used to create Levitate-Instance
-	 * @return
-	 */
-	public JavaPlugin getPlugin() {
-		return plugin;
+	
+	public void listen() {
+		
 	}
-
+	
 	/**
 	 * Get instance of CommandRegistry which holds your Levitate-Commands
 	 * @return
@@ -113,15 +106,7 @@ public class Levitate {
 	public static void registerSyntax(String method, SyntaxHandler handler) {
 		SyntaxValidations.getSyntaxes().put(method, handler);
 	}
-	
-	/**
-	 * Register your own PermissionHandler
-	 * @param permissionHandler PermissionHandler wich checks whether the sender has permission to execute the command
-	 */
-	public void registerPermissionHandler(PermissionHandler permissionHandler) {
-		getCommandRegistry().setPermissionHandler(permissionHandler);
-	}
-	
+		
 	/**
 	 * Register default HelpMap
 	 */

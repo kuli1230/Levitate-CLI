@@ -3,8 +3,6 @@ package de.ketrwu.levitate.cli;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import de.ketrwu.levitate.cli.Message.TextMode;
-
 /**
  * Default Levitate-HelpMap
  * @author Kenneth Wussmann
@@ -20,21 +18,21 @@ public class DefaultHelpMap implements HelpMap {
 	@Override
 	public void onHelp(Logger logger, String command, String[] args) {
 		HashMap<String, String> replaces = new HashMap<String, String>();
-		logger.info(Message.DEFAULTHELPMAP_HEADER.get(TextMode.COLOR, replaces));
+		logger.info(Message.DEFAULTHELPMAP_HEADER.get(replaces));
 		int i = 0;
 		for(CommandInformation info : registry.getCommands().keySet()) {
 			if(info.getCommand().equalsIgnoreCase(getCommandBase(command))) {
 				String syntax = info.getSyntax();
 				replaces.put("%syntax%", syntax);
 				String desc = info.getDescription();
-				if(desc == null || desc.equals("")) desc = Message.DEFAULTHELPMAP_NO_DESCRIPTION.get(TextMode.COLOR);
+				if(desc == null || desc.equals("")) desc = Message.DEFAULTHELPMAP_NO_DESCRIPTION.get();
 				replaces.put("%description%", desc);
-				logger.info(Message.DEFAULTHELPMAP_HELP_ELEMENT.get(TextMode.COLOR, replaces));
+				logger.info(Message.DEFAULTHELPMAP_HELP_ELEMENT.get(replaces));
 			} 
 		}
 		if(i == 0) {
 			replaces.put("%command%", command);
-			logger.info(Message.DEFAULTHELPMAP_NO_COMMANDS.get(TextMode.COLOR, replaces));
+			logger.info(Message.DEFAULTHELPMAP_NO_COMMANDS.get(replaces));
 		}
 	}
 	

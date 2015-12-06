@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
+import de.ketrwu.compactconfig.Configuration;
+
 /**
  * Holds default messages of Levitate.
  * Please read <a href="https://github.com/KennethWussmann/Levitate/wiki/5.-Modify-messages">this</a> to learn how to modify them the right way.
@@ -14,7 +16,7 @@ public enum Message {
 	ONLY_INGAME("This command is for ingame players!"),
 	ONLY_CONSOLE("This command is only for the console!"),
 	COMMAND_DOESNT_EXIST("This command doesn't exist!"),
-	DEFAULTHELPMAP_HEADER("Help of %plugin%:"),
+	DEFAULTHELPMAP_HEADER("Help:"),
 	DEFAULTHELPMAP_HELP_ELEMENT(" - %syntax% = %description%"),
 	DEFAULTHELPMAP_NO_DESCRIPTION("No description"),
 	DEFAULTHELPMAP_NO_COMMANDS("There are no commands like %command%!"),
@@ -50,19 +52,13 @@ public enum Message {
 	DOUBLESYNTAX_HAS_TO_BE_INBETWEEN("Argument \"%arg%\" has to be inbetween \"%min%\" and \"%max%\"!"),
 	NOTEQUALSIGNORECASESYNTAX_CANNOT_EQUAL("Argument \"%arg%\" cannot equal \"%value%\"!"),
 	NOTEQUALSSYNTAX_CANNOT_EQUAL("Argument \"%arg%\" cannot equal \"%value%\"!"),
-	PLAYERSYNTAX_PLAYER_OFFLINE("The player \"%player%\" has to be online!"),
-	PLAYERSYNTAX_PLAYER_ONLINE("The player \"%player%\" has to be offline!"),
 	STRINGSYNTAX_CANNOT_BE_INT("Argmuent \"%arg%\" cannot be a number!"),
 	STRINGSYNTAX_ONLY_LOWERCASE("Argument \"%arg%\" has to contain only lower-case letters!"),
 	STRINGSYNTAX_ONLY_UPPERCASE("Argument \"%arg%\" has to contain only upper-case letters!"),
-	ITEMSTACKSYNTAX_NO_INTEGER("Argument \"%arg%\" has to be an item separated by \":\"!"),
-	ITEMSTACKSYNTAX_POSITIVE_INTEGER("Number \"%int%\" has to be positive or zero!"),
-	ITEMSTACKSYNTAX_ITEM_NOT_FOUND("Item \"%arg%\" doesn't exist!"),
-	WORLDSYNTAX_WORLD_DOES_NOT_EXIST("The world \"%world%\" doesn't exist!"),
 	URLSYNTAX_URL_MALFORMED("The argument \"%arg%\" has to be an URL!"),
 	URLSYNTAX_DOES_NOT_START_WITH("The url \"%arg%\" has to start with \"%parameter%\"!");
 	
-	private static YamlConfiguration config;
+	private static Configuration config;
 	private String message;
 	
 	/**
@@ -79,16 +75,10 @@ public enum Message {
 	 * @param mode RAW = Unmodified message <br />PLAIN = Strip all colors <br />COLOR = Get colored String and also translate alternate ColorCodes 
 	 * @return
 	 */
-	public String get(TextMode mode) {
+	public String get() {
 		String raw = message;
 		if(config != null) {
-			if(config.getString("levitate." + values()[ordinal()].toString()) != null) raw = config.getString("levitate." + values()[ordinal()].toString());
-		}
-		switch(mode) {
-		case COLOR:
-			return ChatColor.translateAlternateColorCodes('&', raw);
-		case PLAIN:
-			return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', raw));
+			if(config.getString("levitate", values()[ordinal()].toString()) != null) raw = config.getString("levitate", values()[ordinal()].toString());
 		}
 		return raw;
 	}
@@ -99,8 +89,8 @@ public enum Message {
 	 * @param replaces HashMap<String, String> with replaces to allow dynamic messages
 	 * @return
 	 */
-	public String get(TextMode mode, HashMap<String, String> replaces) {
-		String message = get(mode);
+	public String get(HashMap<String, String> replaces) {
+		String message = get();
 		for(String key : replaces.keySet()) 
 			message = message.replace(key, replaces.get(key));
 		return message;
@@ -111,29 +101,12 @@ public enum Message {
 	 * @param file Path to .yml file
 	 */
 	public static void loadConfig(File file) {
-		config = new YamlConfiguration();
-		try {
-			config.load(file);
-			for(Message message : values()) {
-				config.addDefault("levitate." + message.toString(), message.get(TextMode.RAW));
-			}
-			config.options().copyDefaults(true);
-			config.save(file);
-		} catch (IOException | InvalidConfigurationException e) {
-			e.printStackTrace();
+		config = new Configuration(file.getAbsolutePath());
+		for(Message message : values()) {
+			config.addDefault("levitate", message.toString(), message.get());
 		}
+		config.saveConfig();
 	}
 
-	/**
-	 * TextMode for Levitate-Messages.<br /><br />
-	 * 
-	 * RAW = Unmodified message<br />
-	 * PLAIN = Strip all colors<br />
-	 * COLOR = Get colored String and also translate alternate ColorCodes 
-	 * @author Kenneth Wussmann
-	 */
-	public enum TextMode {
-		RAW, PLAIN, COLOR
-	}
 	
 }

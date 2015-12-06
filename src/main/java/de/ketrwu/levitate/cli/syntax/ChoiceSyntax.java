@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 
 import de.ketrwu.levitate.cli.Message;
 import de.ketrwu.levitate.cli.SyntaxHandler;
-import de.ketrwu.levitate.cli.Message.TextMode;
 import de.ketrwu.levitate.cli.exception.CommandSyntaxException;
 import de.ketrwu.levitate.cli.exception.SyntaxResponseException;
 
@@ -22,10 +21,10 @@ public class ChoiceSyntax implements SyntaxHandler {
 	public void check(String parameter, String passed) throws SyntaxResponseException, CommandSyntaxException {
 		HashMap<String, String> replaces = new HashMap<String, String>();
 		replaces.put("%arg%", parameter);
-		if(parameter.equals("")) throw new CommandSyntaxException(Message.CHOICESYNTAX_NOT_LIST.get(TextMode.COLOR, replaces));
+		if(parameter.equals("")) throw new CommandSyntaxException(Message.CHOICESYNTAX_NOT_LIST.get(replaces));
 		Pattern p = Pattern.compile(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
 		Matcher m = p.matcher(parameter);
-		if(!m.find()) throw new CommandSyntaxException(Message.CHOICESYNTAX_NOT_COMMA_SEPARATED.get(TextMode.COLOR, replaces));
+		if(!m.find()) throw new CommandSyntaxException(Message.CHOICESYNTAX_NOT_COMMA_SEPARATED.get(replaces));
 		String[] ch = parameter.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
 		List<String> choices = new ArrayList<String>();
 		String strList = "";
@@ -36,7 +35,7 @@ public class ChoiceSyntax implements SyntaxHandler {
 		strList = strList.substring(0,strList.length()-2);
 		replaces.put("%arg%", passed);
 		replaces.put("%list%", strList);
-		if(!choices.contains(passed)) throw new SyntaxResponseException(Message.CHOICESYNTAX_NOT_IN_LIST.get(TextMode.COLOR, replaces));
+		if(!choices.contains(passed)) throw new SyntaxResponseException(Message.CHOICESYNTAX_NOT_IN_LIST.get(replaces));
 		
 	}
 

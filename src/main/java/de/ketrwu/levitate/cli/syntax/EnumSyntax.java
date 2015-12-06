@@ -8,7 +8,6 @@ import java.util.List;
 import de.ketrwu.levitate.cli.CommandRegistry;
 import de.ketrwu.levitate.cli.Message;
 import de.ketrwu.levitate.cli.SyntaxHandler;
-import de.ketrwu.levitate.cli.Message.TextMode;
 import de.ketrwu.levitate.cli.exception.CommandSyntaxException;
 import de.ketrwu.levitate.cli.exception.SyntaxResponseException;
 
@@ -20,10 +19,10 @@ public class EnumSyntax implements SyntaxHandler {
 
 	@Override
 	public void check(String parameter, String passed) throws SyntaxResponseException, CommandSyntaxException {
-		if(parameter.equals("")) throw new CommandSyntaxException(Message.ENUMSYNTAX_NEEDS_CLASSPATH.get(TextMode.COLOR));
+		if(parameter.equals("")) throw new CommandSyntaxException(Message.ENUMSYNTAX_NEEDS_CLASSPATH.get());
 		HashMap<String, String> replaces = new HashMap<String, String>();
 		replaces.put("%class%", parameter);
-		if(!CommandRegistry.existClass(parameter)) throw new CommandSyntaxException(Message.ENUMSYNTAX_CLASS_DOESNT_EXIST.get(TextMode.COLOR, replaces));
+		if(!CommandRegistry.existClass(parameter)) throw new CommandSyntaxException(Message.ENUMSYNTAX_CLASS_DOESNT_EXIST.get(replaces));
 		try {
 			Class<?> cls = Class.forName(parameter);
 			cls.getDeclaredField(passed.toUpperCase());
@@ -39,7 +38,7 @@ public class EnumSyntax implements SyntaxHandler {
 					replaces.clear();
 					replaces.put("%arg%", correctCase(passed));
 					replaces.put("%list%", fields);
-					throw new SyntaxResponseException(Message.ENUMSYNTAX_ARG_NOT_IN_ENUM.get(TextMode.COLOR, replaces));
+					throw new SyntaxResponseException(Message.ENUMSYNTAX_ARG_NOT_IN_ENUM.get(replaces));
 				} catch (ClassNotFoundException e2) { }
 			}
 			e.printStackTrace();

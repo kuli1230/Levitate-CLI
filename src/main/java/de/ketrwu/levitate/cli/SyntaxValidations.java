@@ -33,7 +33,7 @@ public class SyntaxValidations {
 	 * Register default syntaxes to create your command
 	 * @param plugin Instance of JavaPlugin
 	 */
-	public static void registerDefaultSyntax(JavaPlugin plugin) {
+	public static void registerDefaultSyntax() {
 		registerSyntax("boolean", new BooleanSyntax());
 		registerSyntax("int", new IntegerSyntax());
 		registerSyntax("double", new DoubleSyntax());
@@ -45,10 +45,7 @@ public class SyntaxValidations {
 		registerSyntax("enum", new EnumSyntax());
 		registerSyntax("choice", new ChoiceSyntax());
 		registerSyntax("choicei", new ChoiceIgnoreCaseSyntax());
-		registerSyntax("player", new PlayerSyntax());
-		registerSyntax("item", new ItemStackSyntax(plugin));
 		registerSyntax("*", new WildcardSyntax());
-		registerSyntax("world", new WorldSyntax());
 		registerSyntax("url", new URLSyntax());
 	}
 	

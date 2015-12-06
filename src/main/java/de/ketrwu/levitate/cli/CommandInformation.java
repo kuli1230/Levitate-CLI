@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 
-import de.ketrwu.levitate.cli.Message.TextMode;
 import de.ketrwu.levitate.cli.exception.CommandSyntaxException;
 import de.ketrwu.levitate.cli.exception.SyntaxResponseException;
 
@@ -84,20 +83,20 @@ public class CommandInformation {
 			HashMap<String,String> replaces = new HashMap<String, String>();
 			replaces.put("%arg%", arg);
 			
-			if(!arg.startsWith("<")) throw new CommandSyntaxException(Message.CI_ARG_HAS_TO_START_WITH_CHAR.get(TextMode.COLOR, replaces));
-			if(!arg.endsWith(">")) throw new CommandSyntaxException(Message.CI_ARG_HAS_TO_END_WITH_CHAR.get(TextMode.COLOR, replaces));
+			if(!arg.startsWith("<")) throw new CommandSyntaxException(Message.CI_ARG_HAS_TO_START_WITH_CHAR.get(replaces));
+			if(!arg.endsWith(">")) throw new CommandSyntaxException(Message.CI_ARG_HAS_TO_END_WITH_CHAR.get(replaces));
 			arg = arg.substring(1, arg.length()-1);
 			String method = parseArgument(arg).get(0);
 			boolean unlimited = false;
 			if(method.endsWith("...")) {
-				if(matches.hasNext()) throw new CommandSyntaxException(Message.CI_ARG_CANNOT_BE_UNLIMITED.get(TextMode.COLOR, replaces));
+				if(matches.hasNext()) throw new CommandSyntaxException(Message.CI_ARG_CANNOT_BE_UNLIMITED.get(replaces));
 				unlimited = true;
 				method = method.substring(0, method.length()-3);
 			}
 			if(!SyntaxValidations.existHandler(method)) {
 				replaces.clear();
 				replaces.put("%method%", method);
-				throw new CommandSyntaxException(Message.CI_NO_SYNTAX.get(TextMode.COLOR, replaces));
+				throw new CommandSyntaxException(Message.CI_NO_SYNTAX.get(replaces));
 			}
 			this.args.add(new Argument(method, parseArgument(arg).get(1), SyntaxValidations.getSyntaxes().get(method), unlimited));
 		}
@@ -128,15 +127,15 @@ public class CommandInformation {
 				replaces.put("%char%", "[");
 				replaces.put("%arg%", arg);
 				if(ch.equals("[")) {
-					if(start) throw new CommandSyntaxException(Message.CI_ERROR_AT_CHAR_IN_ARG.get(TextMode.COLOR, replaces));
-					if(end) throw new CommandSyntaxException(Message.CI_ERROR_AT_CHAR_IN_ARG.get(TextMode.COLOR, replaces));
+					if(start) throw new CommandSyntaxException(Message.CI_ERROR_AT_CHAR_IN_ARG.get(replaces));
+					if(end) throw new CommandSyntaxException(Message.CI_ERROR_AT_CHAR_IN_ARG.get(replaces));
 					start = true;
 					continue;
 				}
 				if(ch.equals("]")) {
 					replaces.put("%char%", "]");
-					if(!start) throw new CommandSyntaxException(Message.CI_ERROR_AT_CHAR_IN_ARG.get(TextMode.COLOR, replaces));
-					if(end) throw new CommandSyntaxException(Message.CI_ERROR_AT_CHAR_IN_ARG.get(TextMode.COLOR, replaces));
+					if(!start) throw new CommandSyntaxException(Message.CI_ERROR_AT_CHAR_IN_ARG.get(replaces));
+					if(end) throw new CommandSyntaxException(Message.CI_ERROR_AT_CHAR_IN_ARG.get(replaces));
 					end = true;
 					continue;
 				}
@@ -151,7 +150,7 @@ public class CommandInformation {
 					}
 					replaces.clear();
 					replaces.put("%char%", ch);
-					throw new CommandSyntaxException(Message.CI_ERROR_AT_CHAR.get(TextMode.COLOR, replaces));
+					throw new CommandSyntaxException(Message.CI_ERROR_AT_CHAR.get(replaces));
 				}
 			}
 		} else {
@@ -164,7 +163,7 @@ public class CommandInformation {
 	
 	private void processCommandBase(String base) throws CommandSyntaxException {
 		base = base.substring(1);
-		if(base.startsWith("<")) throw new CommandSyntaxException(Message.CI_CMD_CANNOT_START_WITH.get(TextMode.COLOR));
+		if(base.startsWith("<")) throw new CommandSyntaxException(Message.CI_CMD_CANNOT_START_WITH.get());
 		this.command = base;
 	}
 	
