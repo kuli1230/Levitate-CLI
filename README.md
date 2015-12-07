@@ -46,7 +46,7 @@ If you need any help or you have questions, feel free to [contact me](https://gi
 You can get the lastest Levitate-Artifact at:
 * [GitHub Releases](https://github.com/KennethWussmann/Levitate-CLI/releases/latest) (Only Java-8)
 * [Maven](https://github.com/KennethWussmann/Levitate-CLI/wiki/1.-Getting-started#maven) (Only Java-8)
-* [Jenkins Java-8](http://ci.ketrwu.de/job/Levitate-CLI-Java-8/lastSuccessfulBuild/)
+* [Jenkins Java-8](http://ci.ketrwu.de/job/Levitate-CLI-Java-8/lastSuccessfulBuild/) Not ready yet!
 
 #License
 Levitate is licensed under [GNU General Public License Version 2](https://github.com/KennethWussmann/Levitate-CLI/blob/master/LICENSE).
