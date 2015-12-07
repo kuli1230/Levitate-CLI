@@ -13,7 +13,7 @@ import de.ketrwu.levitate.cli.exception.SyntaxResponseException;
 
 /**
  * Bundles everything you need to use Levitate.
- * Read <a href="https://github.com/KennethWussmann/Levitate/wiki/2.-First-command">this page</a> to create your first Levitate-Command.
+ * Read <a href="https://github.com/KennethWussmann/Levitate-CLI/wiki/2.-First-command">this page</a> to create your first Levitate-Command.
  * @author Kenneth Wussmann
  */
 
@@ -25,8 +25,7 @@ public class Levitate {
 	
 	/**
 	 * Bundles everything you need to use Levitate.
-	 * Read <a href="https://github.com/KennethWussmann/Levitate/wiki/2.-First-command">this page</a> to create your first Levitate-Command.
-	 * @param plugin Your plugin instance
+	 * Read <a href="https://github.com/KennethWussmann/Levitate-CLI/wiki/2.-First-command">this page</a> to create your first Levitate-Command.
 	 */
 	public Levitate() {
 		registerDefaultLogger();
@@ -37,7 +36,8 @@ public class Levitate {
 
 	/**
 	 * Bundles everything you need to use Levitate.
-	 * Read <a href="https://github.com/KennethWussmann/Levitate/wiki/2.-First-command">this page</a> to create your first Levitate-Command.
+	 * Read <a href="https://github.com/KennethWussmann/Levitate/wiki-CLI/2.-First-command">this page</a> to create your first Levitate-Command.
+	 * @param logger LevitateLogger to handle message-logging
 	 */
 	public Levitate(LevitateLogger logger) {
 		registerLogger(logger);
@@ -49,9 +49,9 @@ public class Levitate {
 	/**
 	 * Bundles everything you need to use Levitate. 
 	 * Pass <b>true</b> to create a <i>messages.yml</i>.
-	 * Read more about the <i>messages.yml</i> <a href="https://github.com/KennethWussmann/Levitate/wiki/5.-Modify-messages">here</a>.
-	 * Read <a href="https://github.com/KennethWussmann/Levitate/wiki/2.-First-command">this page</a> to create your first Levitate-Command.
-	 * @param plugin
+	 * Read more about the <i>messages.yml</i> <a href="https://github.com/KennethWussmann/Levitate-CLI/wiki/5.-Modify-messages">here</a>.
+	 * Read <a href="https://github.com/KennethWussmann/Levitate/wiki-CLI/2.-First-command">this page</a> to create your first Levitate-Command.
+	 * @param logger LevitateLogger to handle message-logging
 	 * @param createYAML
 	 */
 	public Levitate(LevitateLogger logger, boolean createYAML) {
@@ -109,6 +109,10 @@ public class Levitate {
 		readInput = false;
 	}
 	
+	/**
+	 * Register your own LevitateLogger
+	 * @param logger
+	 */
 	public void registerLogger(LevitateLogger logger) {
 		this.logger = logger;
 	}
@@ -117,6 +121,9 @@ public class Levitate {
 		return logger;
 	}
 	
+	/**
+	 * Register the default LevitateLogger
+	 */
 	private void registerDefaultLogger() {
 		registerLogger(new LevitateLogger() {
 			

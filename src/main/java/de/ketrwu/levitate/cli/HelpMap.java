@@ -9,7 +9,7 @@ package de.ketrwu.levitate.cli;
 public interface HelpMap {
 	
 	/**
-	 * Called when player passes invalid command
+	 * Called when user passes invalid command
 	 * @param command Entered base of the command
 	 * @param args Arguments of the command
 	 */

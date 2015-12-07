@@ -134,16 +134,4 @@ public class ParameterSet {
 		return (Object) parameter.get(i);
 	}
 	
-	/**
-	 * Checks if string is an integer
-	 * @param val 
-	 * @return
-	 */
-	private boolean isInt(String val) {
-		try {
-			Integer.parseInt(val);
-			return true;
-		} catch (Exception e) { }
-		return false;
-	}
 }

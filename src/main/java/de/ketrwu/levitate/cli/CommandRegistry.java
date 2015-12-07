@@ -161,7 +161,7 @@ public class CommandRegistry {
 	 * You don't need to call it.
 	 * @param command The base-command
 	 * @param args The arguments
-	 * @return
+	 * @return boolean
 	 * @throws CommandSyntaxException
 	 * @throws SyntaxResponseException
 	 * @throws ExecutorIncompatibleException 

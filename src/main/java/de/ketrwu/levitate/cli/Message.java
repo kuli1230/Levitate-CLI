@@ -7,7 +7,7 @@ import de.ketrwu.compactconfig.Configuration;
 
 /**
  * Holds default messages of Levitate.
- * Please read <a href="https://github.com/KennethWussmann/Levitate/wiki/5.-Modify-messages">this</a> to learn how to modify them the right way.
+ * Please read <a href="https://github.com/KennethWussmann/Levitate-CLI/wiki/5.-Modify-messages">this</a> to learn how to modify them the right way.
  * @author Kenneth Wussmann
  */
 public enum Message {
@@ -62,7 +62,7 @@ public enum Message {
 	
 	/**
 	 * Holds default messages of Levitate.
-	 * Please read <a href="https://github.com/KennethWussmann/Levitate/wiki/5.-Modify-messages">this</a> to learn how to modify them the right way.
+	 * Please read <a href="https://github.com/KennethWussmann/Levitate-CLI/wiki/5.-Modify-messages">this</a> to learn how to modify them the right way.
 	 * @param message Message
 	 */
 	Message(String message) {
