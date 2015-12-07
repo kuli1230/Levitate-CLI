@@ -18,7 +18,6 @@ public class CommandInformation {
 
 	private String syntax;
 	private String command;
-	private String permission;
 	private String description = "";
 	private List<Argument> args = new ArrayList<Argument>();
 	
@@ -36,28 +35,12 @@ public class CommandInformation {
 	}
 	
 	/**
-	 * Create a CommandInformation with permission for a new command
-	 * @param syntax Your syntax
-	 * @param permission Your new permission
-	 */
-	public CommandInformation(String syntax, String permission) {
-		this.permission = permission;
-		this.syntax = syntax;
-		try {
-			processSyntax();
-		} catch (CommandSyntaxException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
 	 * Create a CommandInformation with permission and description for a new command
 	 * @param syntax Your syntax
 	 * @param permission Your new permission
 	 * @param description Your description of your command
 	 */
-	public CommandInformation(String syntax, String permission, String description) {
-		this.permission = permission;
+	public CommandInformation(String syntax, String description) {
 		this.syntax = syntax;
 		this.description = description;
 		try {
@@ -73,13 +56,16 @@ public class CommandInformation {
 			processCommandBase(syntax);
 			return;
 		}
-		Iterator<MatchResult> matches = SyntaxValidations.allMatches(Pattern.compile("<([^>]*)>|([\\/|\\?|\\$][.^\\w]*)"), syntax).iterator();
+		Iterator<MatchResult> matches = SyntaxValidations.allMatches(Pattern.compile("<([^>]*)>|(\\w+)"), syntax).iterator();
+		int index = 0;
 		while(matches.hasNext()) {
 			String arg = matches.next().group();
-			if(arg.startsWith("$")|arg.startsWith("?")|arg.startsWith("/")) {
+			if(index == 0) {
 				processCommandBase(arg);
+				index++;
 				continue;
 			}
+			index++;
 			HashMap<String,String> replaces = new HashMap<String, String>();
 			replaces.put("%arg%", arg);
 			
@@ -162,7 +148,6 @@ public class CommandInformation {
 	}
 	
 	private void processCommandBase(String base) throws CommandSyntaxException {
-		base = base.substring(1);
 		if(base.startsWith("<")) throw new CommandSyntaxException(Message.CI_CMD_CANNOT_START_WITH.get());
 		this.command = base;
 	}
@@ -217,14 +202,6 @@ public class CommandInformation {
 
 	public void setCommand(String command) {
 		this.command = command;
-	}
-
-	public String getPermission() {
-		return permission;
-	}
-
-	public void setPermission(String permission) {
-		this.permission = permission;
 	}
 
 	public String getDescription() {

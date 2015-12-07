@@ -1,6 +1,5 @@
 package de.ketrwu.levitate.cli;
 
-import java.util.logging.Logger;
 
 
 /**
@@ -14,6 +13,6 @@ public interface HelpMap {
 	 * @param command Entered base of the command
 	 * @param args Arguments of the command
 	 */
-	public void onHelp(Logger logger, String command, String[] args);
+	public void onHelp(LevitateLogger logger, String command, String[] args);
 	
 }

@@ -1,7 +1,6 @@
 package de.ketrwu.levitate.cli;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 
 import de.ketrwu.compactconfig.Configuration;
@@ -27,7 +26,7 @@ public enum Message {
 	CI_ERROR_AT_CHAR_IN_ARG("Error at character \"%char%\" in \"%arg%\"!"),
 	CI_ERROR_AT_CHAR("Error at character \"%char%\"!"),
 	CI_CMD_CANNOT_START_WITH("Command cannot start with \"<\"!"),
-	CR_PARAMETERCOUNT_INVALID("ParameterCount of \"%method%\" has to be three!"),
+	CR_PARAMETERCOUNT_INVALID("ParameterCount of \"%method%\" has to be two!"),
 	CR_PARAMETER_INVALID("Parameter %index% of \"%method%\" has to be \"%class%\"!"),
 	BOOLEANSYNTAX_HAS_TO_BE_BOOLEAN("Argument \"%arg%\" has to be a boolean!"),
 	CHOICESYNTAX_NOT_LIST("Parameter \"%arg%\" has to be a list of choices!"),

@@ -3,7 +3,13 @@ package de.ketrwu.levitate.cli;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.logging.Level;
+
+import de.ketrwu.levitate.cli.exception.CommandSyntaxException;
+import de.ketrwu.levitate.cli.exception.SyntaxResponseException;
 
 /**
  * Bundles everything you need to use Levitate.
@@ -14,15 +20,27 @@ import java.util.logging.Logger;
 public class Levitate {
 	
 	private CommandRegistry registry;
-	private Logger logger;
+	private LevitateLogger logger;
+	private boolean readInput;
 	
 	/**
 	 * Bundles everything you need to use Levitate.
 	 * Read <a href="https://github.com/KennethWussmann/Levitate/wiki/2.-First-command">this page</a> to create your first Levitate-Command.
 	 * @param plugin Your plugin instance
 	 */
-	public Levitate(Logger logger) {
-		this.logger = logger;
+	public Levitate() {
+		registerDefaultLogger();
+		SyntaxValidations.registerDefaultSyntax();
+		registry = new CommandRegistry(logger);
+		registry.registerDefaultHelpMap();
+	}
+
+	/**
+	 * Bundles everything you need to use Levitate.
+	 * Read <a href="https://github.com/KennethWussmann/Levitate/wiki/2.-First-command">this page</a> to create your first Levitate-Command.
+	 */
+	public Levitate(LevitateLogger logger) {
+		registerLogger(logger);
 		SyntaxValidations.registerDefaultSyntax();
 		registry = new CommandRegistry(logger);
 		registry.registerDefaultHelpMap();
@@ -36,8 +54,8 @@ public class Levitate {
 	 * @param plugin
 	 * @param createYAML
 	 */
-	public Levitate(Logger logger, boolean createYAML) {
-		this.logger = logger;
+	public Levitate(LevitateLogger logger, boolean createYAML) {
+		registerLogger(logger);
 		SyntaxValidations.registerDefaultSyntax();
 		registry = new CommandRegistry(logger);
 		registry.registerDefaultHelpMap();
@@ -59,8 +77,59 @@ public class Levitate {
 		}
 	}
 	
-	public void listen() {
-		
+	public void readInput() {
+		readInput = true;
+		Scanner scanner = new Scanner(System.in);
+		while(readInput) {
+			String command = scanner.nextLine();
+			List<String> args = new ArrayList<String>();
+			String[] argsArr = new String[]{};
+			if(command.contains(" ")) {
+				String[] splitted = command.split(" ");
+				for (int i = 0; i < splitted.length; i++) {
+					if(i == 0) {
+						command = splitted[i];
+						continue;
+					}
+					args.add(splitted[i]);
+				}
+				argsArr = args.toArray(new String[args.size()]);
+			}
+			try {
+				getCommandRegistry().userPassCommand(command, argsArr);
+			} catch (CommandSyntaxException e) {
+				e.printStackTrace();
+			} catch (SyntaxResponseException e) {
+				logger.log(Level.WARNING, e.getMessage());
+			}
+		}
+	}
+	
+	public void stopReading() {
+		readInput = false;
+	}
+	
+	public void registerLogger(LevitateLogger logger) {
+		this.logger = logger;
+	}
+	
+	public LevitateLogger getLogger() {
+		return logger;
+	}
+	
+	private void registerDefaultLogger() {
+		registerLogger(new LevitateLogger() {
+			
+			@Override
+			public void log(String message) {
+				System.out.println(message);
+			}
+			
+			@Override
+			public void log(Level level, String message) {
+				System.out.println("[" + level.toString() + "] " + message);
+			}
+		});
 	}
 	
 	/**

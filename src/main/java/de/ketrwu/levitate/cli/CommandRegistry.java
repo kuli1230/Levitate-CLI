@@ -3,12 +3,8 @@ package de.ketrwu.levitate.cli;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Logger;
 
 import de.ketrwu.levitate.cli.exception.CommandAnnotationException;
 import de.ketrwu.levitate.cli.exception.CommandSyntaxException;
@@ -23,21 +19,14 @@ public class CommandRegistry {
 	private HashMap<CommandInformation, CommandHandler> commands = new HashMap<CommandInformation, CommandHandler>();
 	private List<String> aliases = new ArrayList<String>();
 	private List<Object> commandClasses = new ArrayList<Object>();
-	private Logger logger;
+	private LevitateLogger logger;
 	private HelpMap helpMap = null;
 	
-	/**
-	 * This class registers your commands and handels them.
-	 * Because you don't pass a logger Levitate will use the default one.
-	 */
-	public CommandRegistry() { 
-		setLogger(Logger.getGlobal());
-	}
 	
 	/**
 	 * This class registers your commands and handels them.
 	 */
-	public CommandRegistry(Logger logger) { 
+	public CommandRegistry(LevitateLogger logger) { 
 		this.setLogger(logger);
 	}
 	
@@ -55,14 +44,14 @@ public class CommandRegistry {
 				CommandInformation cmd = null;
 				String[] aliases = null;
 				if(m.isAnnotationPresent(de.ketrwu.levitate.cli.Command.class)) {
-					if(m.getParameterTypes().length != 3) throw new CommandAnnotationException(Message.CR_PARAMETERCOUNT_INVALID.get(replaces));
-					if(m.getParameterTypes()[1] != String.class) {
-						replaces.put("%index%", "1");
+					if(m.getParameterTypes().length != 2) throw new CommandAnnotationException(Message.CR_PARAMETERCOUNT_INVALID.get(replaces));
+					if(m.getParameterTypes()[0] != String.class) {
+						replaces.put("%index%", "0");
 						replaces.put("%class%", "String");
 						throw new CommandAnnotationException(Message.CR_PARAMETER_INVALID.get(replaces));
 					}
-					if(m.getParameterTypes()[2] != ParameterSet.class) {
-						replaces.put("%index%", "2");
+					if(m.getParameterTypes()[1] != ParameterSet.class) {
+						replaces.put("%index%", "1");
 						replaces.put("%class%", "ParameterSet");
 						throw new CommandAnnotationException(Message.CR_PARAMETER_INVALID.get(replaces));
 					}
@@ -70,7 +59,6 @@ public class CommandRegistry {
 					Command commandAnnotation = m.getAnnotation(Command.class);
 					cmd = new CommandInformation(commandAnnotation.syntax());
 					
-					if(!commandAnnotation.permission().equals("")) cmd.setPermission(commandAnnotation.permission());
 					if(!commandAnnotation.description().equals("")) cmd.setDescription(commandAnnotation.description());
 					if(commandAnnotation.aliases().length > 0) aliases = commandAnnotation.aliases();
 					
@@ -135,10 +123,6 @@ public class CommandRegistry {
 		for(String alias : aliases) {
 			String ns = "";
 			String syntax = info.getSyntax();
-			if(syntax.startsWith("?") || syntax.startsWith("/") || syntax.startsWith("$")) {
-				ns = syntax.substring(0, 1);
-				syntax = syntax.substring(1);
-			}
 			ns += alias + " ";
 			if(syntax.contains(" ")) {
 				String[] split = syntax.split(" ");
@@ -149,8 +133,7 @@ public class CommandRegistry {
 				}
 			}
 			if(ns.endsWith(" ")) ns = ns.substring(0, ns.length()-1);
-			CommandInformation cinfo = new CommandInformation(ns, info.getPermission());
-			cinfo.setPermission(info.getPermission());
+			CommandInformation cinfo = new CommandInformation(ns);
 			cinfo.setDescription(info.getDescription());
 			registerAlias(alias);
 			commands.put(cinfo, handler);
@@ -230,11 +213,11 @@ public class CommandRegistry {
 		this.helpMap = helpMap;
 	}
 
-	public Logger getLogger() {
+	public LevitateLogger getLogger() {
 		return logger;
 	}
 
-	public void setLogger(Logger logger) {
+	public void setLogger(LevitateLogger logger) {
 		this.logger = logger;
 	}
 	
