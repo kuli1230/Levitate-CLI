@@ -14,7 +14,7 @@
 Levitate-CLI is an awesome and easy to use Command-Library for your Java CLI-Application.<br />
 It allows you to register commands with arguments and description in seconds. 
 </p>
-
+ 
 #Example
 This is a simple command:
 ```Java
