@@ -25,7 +25,7 @@ public static void main(String[] args) {
 }
 	
 @Command(syntax = "create <eq[user]> <string>", description = "Create a new user", aliases = {"make"})
-public void killCommand(CommandSender sender, String cmd, ParameterSet args) {
+public void createUserCommand(CommandSender sender, String cmd, ParameterSet args) {
 	// Create your user and handle arguments the smart and easy way.
 }
 ```
