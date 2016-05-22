@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="http://media.ketrwu.de/levitate-cli-header.png" alt="Levitate-Header"><br>
+  <img src="http://i.imgur.com/KR49kHz.png" alt="Levitate-Header"><br>
   Command Line Interface Edition
   <br />
   <a href="https://raw.githubusercontent.com/KennethWussmann/Levitate-CLI/master/LICENSE"><img src="https://img.shields.io/badge/license-GPLv2-blue.svg" alt="GitHub license"></a>
